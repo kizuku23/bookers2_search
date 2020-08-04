@@ -1,0 +1,96 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+.clearfix::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+header {
+  color: white;
+}
+
+body {
+  margin-top: 51px;
+}
+
+.navbar-left span {
+  font-size: 20px;
+  padding-top: 10px
+}
+
+p {
+  margin: 0 0 10px;
+}
+
+p, ul, td {
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+ol {
+  list-style-type: none;
+  padding-left: 10px;
+}
+
+a:visited {
+    color: #666;
+}
+
+.field, .actions {
+  margin-bottom: 10px;
+}
+
+.row {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.flash {
+  color: green;
+}
+
+#error_explanation {
+  color: red;
+}
+
+.like-button {
+  text-decoration: none;
+}
+
+.comment-user {
+  float: left;
+  margin-right: 20px;
+  margin-bottom: 10px;
+}
+
+.comment-entry {
+  float: left;
+  line-height: 40px;
+  margin-right: 20px;
+}
+
+.comment-destroy {
+  line-height: 40px;
+}
+
+.btn-destroy {
+  margin-right: 20px;
+}

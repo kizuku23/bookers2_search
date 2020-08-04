@@ -1,0 +1,138 @@
+<!-- Books Detail -->
+
+<!-- サイドバー -->
+
+<div class="row">
+  <div class="col-xs-3">
+
+    <h2>User info</h2>
+    <table class="table">
+      <tbody>
+        <tr><%= attachment_image_tag @books.user, :profile_image, format: 'jpeg', class: "pull-left profile-img", fallback: "no_image.jpg", size: "100x100" %>
+        </tr>
+      <tr>
+        <th>name</th>
+        <th><%= @books.user.name %></th>
+      </tr>
+      <tr>
+        <th>introduction</th>
+        <th><%= @books.user.introduction %></th>
+      </tr>
+      <tr>
+        <th>follows</th>
+        <th>
+          <%= link_to user_following_path(@books.user.id) do %>
+            <%= @books.user.follower.count %>
+          <% end %>
+        </th>
+      </tr>
+      <tr>
+        <th>followers</th>
+        <th>
+          <%= link_to user_followers_path(@books.user.id) do %>
+            <%= @books.user.followed.count %>
+          <% end %>
+        </th>
+      </tr>
+      </tbody>
+    </table>
+    <div class="row">
+      <% if @books.user == current_user %>
+        <%= link_to edit_user_path(@books.user.id), class: "col-xs-12 btn btn-default" do %>
+          <span class="glyphicon glyphicon-wrench"></span>
+        <% end %>
+      <% else %>
+        <% if current_user.following?(@books.user) %>
+          <%= link_to 'フォロー外す', unfollow_path(@books.user.id), class: "col-xs-12 btn btn-primary", method: :POST %>
+        <% else %>
+          <%= link_to 'フォローする', follow_path(@books.user.id), class: "col-xs-12 btn btn-success", method: :POST %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <%= render 'books/new', book: @book %>
+
+  </div>
+
+  <!-- 投稿詳細 -->
+
+  <div class="col-xs-9">
+    <h2>Book detail</h2>
+    <table class="table">
+      <tbody>
+        <tr>
+          <td>
+            <%= link_to user_path(@books.user) do %>
+              <%= attachment_image_tag @books.user, :profile_image, format: 'jpeg', class: "profile-img", fallback: "no_image.jpg", size: "40x40" %>
+                <br>
+                <%= @books.user.name %>
+            <% end %>
+          </td>
+          <td><%= @books.title %></td>
+          <td><%= @books.body %></td>
+          <td>
+            <% if @books.user == current_user %>
+              <%= link_to "Edit", edit_book_path, class: "btn-sm btn-success" %>
+            <% end %>
+          </td>
+          <td>
+            <% if @books.user == current_user %>
+              <%= link_to "Destroy", book_path, method: :delete, "data-confirm" => "本当に消しますか?", class: "btn-sm btn-danger" %>
+            <% end %>
+          </td>
+          <% if @books.favorited_by?(current_user) %>
+          <td>
+            <%= link_to book_favorites_path(@books), method: :delete do %>
+              <i class="fa fa-heart" area-hidden="true" style="color: red;"></i>
+              <%= @books.favorites.count %>
+            <% end %>
+          </td>
+          <% else %>
+          <td>
+            <%= link_to book_favorites_path(@books), method: :post do %>
+              <i class="fa fa-heart-o" aria-hidden="true"></i>
+              <%= @books.favorites.count %>
+            <% end %>
+          </td>
+          <% end %>
+          <td>
+            <p>コメント数：<%= @books.book_comments.count %></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ol>
+      <% @books.book_comments.each do |book_comment| %>
+        <li class="clearfix">
+
+          <div class="comment-user">
+            <%= link_to user_path(book_comment.user) do %>
+              <%= attachment_image_tag book_comment.user, :profile_image, format: 'jpeg', class: "profile-img pull-left", fallback: "no_image.jpg", size: "40x40" %>
+              <br>
+              <%= book_comment.user.name %>
+            <% end %>
+          </div>
+          <div class="comment-entry"><%= book_comment.comment %></div>
+
+          <% if book_comment.user == current_user %>
+          <div class="comment-destroy">
+            <%= link_to "Destroy", book_book_comment_path(book_comment.book, book_comment), method: :delete, class: "btn-sm btn-danger btn-destroy" %>
+          </div>
+          <% end %>
+
+        </li>
+      <% end %>
+    </ol>
+
+    <%= form_for [@books, @book_comment] do |f| %>
+      <div class="row">
+        <div class="col-sm-12">
+          <%= f.text_area :comment, rows:'5', class: "form-control" %>
+        </div>
+      </div>
+      <%= f.submit "送信する", class: "btn btn-sm btn-base-1 mt-20 pull-right" %>
+    <% end %>
+
+  </div>
+</div>
